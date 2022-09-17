@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const bcrypt = require('bcryptjs')
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -22,6 +22,15 @@ const userSchema = new mongoose.Schema({
         minLength: 3,
     }
 
+})
+
+// this middleware will run before saving the data
+//we are hashing the password before saving
+userSchema.pre('save', async function(){
+    //generating random bytes 
+    const salt = await bcrypt.genSalt(10)
+    //referencing the password from the above schema and hashing it using bcrypt library
+    this.password = await bcrypt.hash(this.password,salt)
 })
 
 //the collection name will going to be users in lowercase for this schema
