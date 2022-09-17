@@ -36,8 +36,8 @@ userSchema.pre('save', async function(){
 
 //instance method to create jwt token
 userSchema.methods.getJWT = function (){
-  return  jwt.sign({userID: this._id, name: this.name}, 'jwtsecretkeystring', {
-        expiresIn: '30d'
+  return  jwt.sign({userID: this._id, name: this.name}, process.env.JWT_SECRET, {
+        expiresIn: process.env.Expiry_time
     })
 }
 userSchema.methods.comparePassword = async function (secondpartypassword){
