@@ -39,7 +39,10 @@ userSchema.methods.getJWT = function (){
   return  jwt.sign({userID: this._id, name: this.name}, 'jwtsecretkeystring', {
         expiresIn: '30d'
     })
-
+}
+userSchema.methods.comparePassword = async function (secondpartypassword){
+    const isMatch = await bcrypt.compare(secondpartypassword, this.password)
+    return isMatch
 }
 
 //the collection name will going to be users in lowercase for this schema
