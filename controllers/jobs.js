@@ -3,10 +3,17 @@ const {StatusCodes} = require('http-status-codes')
 const { NotFoundError, BadRequestError} = require('../errors')
 const mongoose = require('mongoose')
 const getJobs = async(req,res)=>{
-    res.json(req.user)
+    const jobs = await Job.find({createdBy: req.user.userID}).sort('createdAt')
+    res.status(StatusCodes.OK).json({jobs,count: jobs.length})
 }
 const getJob = async(req,res)=>{
-    res.send("single job with id fetched")
+    // nested destructuring
+    const {user: {userID}, params: {id: jobID}} = req
+    const job = await Job.findOne({_id: jobID,createdBy: userID})
+    if(!job){
+        throw new NotFoundError("This job does not exist")
+    }
+    res.status(StatusCodes.OK).json(job)
 }
 const createJob = async(req,res)=>{
     req.body.createdBy = req.user.userID
