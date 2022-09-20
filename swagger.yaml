@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  title: Jobs API
+  description: This is a RESTFUL API for managing job status. This API comes with user authentication and verification using jwt tokens.
+  contact:
+    name: Ankush Gupta
+    url: https://www.linkedin.com/in/ankushgupta365/
+    email: ankushgupta365@gmail.com
+  version: '1.0'
+servers:
+- url: https://jobsapi-rest.herokuapp.com/api/v1
+  variables: {}
+paths:
+  /auth/login:
+    post:
+      tags:
+      - Auth route
+      summary: login
+      operationId: login
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Loginrequest'
+              - example:
+                  email: rohan@gmail.com
+                  password: ksdfhsd
+            example:
+              email: rohan@gmail.com
+              password: ksdfhsd
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/register:
+    post:
+      tags:
+      - Auth route
+      summary: Register
+      description: The already registered email cannot be registered again. Instead, use different email addresses always  for a successful response
+      operationId: Register
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Registerrequest'
+              - example:
+                  name: rohan3
+                  email: rohan3@gmail.com
+                  password: Akflab@1234
+            example:
+              name: rohan3
+              email: rohan3@gmail.com
+              password: Akflab@1234
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /job:
+    get:
+      tags:
+      - Job route
+      summary: getJobs
+      operationId: getJobs
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - Job route
+      summary: createJob
+      operationId: createJob
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Createjobrequest'
+              - {}
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /job/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The job ID
+    get:
+      tags:
+      - Job route
+      summary: single job
+      operationId: singlejob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    patch:
+      tags:
+      - Job route
+      summary: update job
+      operationId: updatejob
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/Updatejobrequest'
+              - {}
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+      - Job route
+      summary: delete job
+      operationId: deletejob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    Loginrequest:
+      title: Loginrequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: rohan@gmail.com
+        password: ksdfhsd
+    Registerrequest:
+      title: Registerrequest
+      required:
+      - name
+      - email
+      - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: rohan3
+        email: rohan3@gmail.com
+        password: Akflab@1234
+    Createjobrequest:
+      title: Createjobrequest
+      required:
+      - company
+      - position
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+      description: ''
+      example:
+        company: samsung
+        position: intern
+    Updatejobrequest:
+      title: Updatejobrequest
+      required:
+      - company
+      - position
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+      description: ''
+      example:
+        company: swiggy
+        position: front-end
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+- httpBearer: []
